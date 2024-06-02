@@ -1,0 +1,7 @@
+---
+# defaults file for myns.myrole.test_role
+foo: bar
+hoge: huga
+
+file_src: test_file
+template_src: test_template.j2

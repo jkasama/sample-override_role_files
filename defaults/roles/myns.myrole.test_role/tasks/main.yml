@@ -1,0 +1,35 @@
+---
+- name: Print Search Path
+  ansible.builtin.debug:
+    var: ansible_search_path[-1]
+
+- name: Copy file with relative path
+  ansible.builtin.copy:
+    src: test_file
+    dest: /tmp/test_file
+
+- name: Get File Contents
+  ansible.builtin.command:
+    cmd: /bin/cat /tmp/test_file
+  register: cat_test_file_result
+  changed_when: false
+
+- name: Use Templates with relative path
+  ansible.builtin.template:
+    src: test_template.j2
+    dest: /tmp/test_template
+
+- name: Get Template Contents
+  ansible.builtin.command:
+    cmd: /bin/cat /tmp/test_template
+  register: cat_test_template_result
+
+- name: Print File Contents
+  ansible.builtin.debug:
+    msg: |
+        File Contents:
+        {{ cat_test_file_result.stdout }}
+
+        Template Contents:
+        {{ cat_test_template_result.stdout }}
+...

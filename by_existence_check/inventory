@@ -1,0 +1,10 @@
+---
+- name: Test File and Template module demo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Execute Role
+      ansible.builtin.import_role:
+        name: myns.myrole.test_role
+...

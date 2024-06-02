@@ -1,0 +1,14 @@
+---
+- name: Test File and Template module demo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - name: myns.myrole.test_role
+      # Project Root のfiles/ , templates/ 以下の絶対パスを参照する
+      vars:
+        file_src: "{{ ansible_search_path[-1] }}/files/test_file"
+        template_src: "{{ ansible_search_path[-1] }}/templates/test_template.j2"
+      # Role 内のdefaults/main.yaml の変数に指定したパスを参照する。（こっちは相対パス）
+    - name: myns.myrole.test_role
+...

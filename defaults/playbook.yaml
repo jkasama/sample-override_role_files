@@ -1,0 +1,9 @@
+---
+- name: Test File and Template module demo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - name: myns.myrole.test_role
+    - name: myns.myrole.test_role_2
+...

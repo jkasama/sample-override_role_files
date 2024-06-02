@@ -1,0 +1,63 @@
+---
+- name: Print Search Path
+  ansible.builtin.debug:
+    var: ansible_search_path
+
+- name: Check Project Root File Existence
+  ansible.builtin.stat:
+    path: "{{ ansible_search_path[-1] }}/files/test_file"
+  register: _file_stat
+  delegate_to: localhost
+  run_once: true
+
+- name: Copy file if Project Root Files Exist
+  ansible.builtin.copy:
+    src: "{{ ansible_search_path[-1] }}/files/test_file"
+    dest: /tmp/test_file
+  when: _file_stat.stat.exists
+
+- name: Copy file
+  ansible.builtin.copy:
+    src: test_file
+    dest: /tmp/test_file
+  when: not _file_stat.stat.exists
+
+- name: Get File Contents
+  ansible.builtin.command:
+    cmd: /bin/cat /tmp/test_file
+  register: cat_test_file_result
+  changed_when: false
+
+- name: Check Project Root Templates Existence
+  ansible.builtin.stat:
+    path: "{{ ansible_search_path[-1] }}/templates/test_template.j2"
+  register: _template_stat
+  delegate_to: localhost
+  run_once: true
+
+- name: Deploy file if Project Root Files Exist
+  ansible.builtin.template:
+    src: "{{ ansible_search_path[-1] }}/templates/test_template.j2"
+    dest: /tmp/test_template
+  when: _template_stat.stat.exists
+
+- name: Use Templates
+  ansible.builtin.template:
+    src: test_template.j2
+    dest: /tmp/test_template
+  when: not _template_stat.stat.exists
+
+- name: Get Template Contents
+  ansible.builtin.command:
+    cmd: /bin/cat /tmp/test_template
+  register: cat_test_template_result
+
+- name: Print File Contents
+  ansible.builtin.debug:
+    msg: |
+        File Contents:
+        {{ cat_test_file_result.stdout }}
+
+        Template Contents:
+        {{ cat_test_template_result.stdout }}
+...
