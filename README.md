@@ -1,7 +1,7 @@
 Sample Code for Override Role's files/ or templates/ files
 ---
 
-[こちらの記事]()のサンプルコードです。
+[こちらの記事](https://qiita.com/jkasama/items/7decbd9114aded7d7452)のサンプルコードです。
 
 defaults/ 
 ---
